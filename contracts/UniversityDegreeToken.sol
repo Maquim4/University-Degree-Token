@@ -45,6 +45,8 @@ contract UniversityDegree is ERC721URIStorage {
     Counters.Counter private _tokenIds;
 
     struct Student{
+        address studentAddress;
+        string fullName;
         string degreeMajor;
         string degreeType;
         uint256 score;
@@ -178,13 +180,13 @@ contract UniversityDegree is ERC721URIStorage {
         return s_degreeMaxScore;
     }
 
-    function createStudent(address _student, string memory _degreeMajor,
+    function createStudent(string memory _fullName, address _student, string memory _degreeMajor,
         string memory _degreeType,
         uint256 _score) external onlyOwner {
             if (_score > s_degreeMaxScore) {
             revert UniversityDegree__ScoreTooHigh();
         }
-        Student memory student = Student({degreeMajor: _degreeMajor, degreeType: _degreeType, score: _score, degreeImage: s_degreeInProcess});
+        Student memory student = Student({studentAddress: _student, fullName: _fullName, degreeMajor: _degreeMajor, degreeType: _degreeType, score: _score, degreeImage: s_degreeInProcess});
         students.push(student);
         s_adressToStudent[_student] = student;
         studentsCount++;
