@@ -15,5 +15,5 @@ export const SOCIAL_GITHUB = 'Maquim4'
 export const INFURA_KEY = 'e6266a15cef44ba390bf89af03602e4e'
 export const NETWORKS = [mainnet, goerli, sepolia]
 
-export const CONTRACT_ADDRESS = '0xD7d401B6D8d4c6293919Bb271055A1A57A8B4B5A'
+export const CONTRACT_ADDRESS = '0x754f1B80cC7dACf00eD778DfdF2A0a3E717DdF3a'
 export const CONTRACT_OWNER = '0x2C9B7E72376D2d01faBd9df8cb613e4b23BC13A6'

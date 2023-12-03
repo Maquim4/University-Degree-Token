@@ -19,7 +19,7 @@ export const Logo = (props: any) => {
           objectFit={"cover"}
           src={"/logo2.png"}
         />
-        <Text as="kbd">UDSBT</Text>
+        <Text as="abbr">UDSBT</Text>
       </>
     </HStack>
   );

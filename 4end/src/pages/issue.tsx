@@ -1,7 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import * as React from "react";
-import { useAccount, useSignMessage, useContractRead, usePrepareContractWrite,useContractWrite } from "wagmi";
-import {ethers} from 'ethers';
+import * as React from 'react'
+import {
+  useAccount,
+  useSignMessage,
+  useContractRead,
+  usePrepareContractWrite,
+  useContractWrite,
+} from 'wagmi'
+import { useClipboard } from '@chakra-ui/react'
+import { LinkComponent } from '../components/LinkComponent'
+import axios from 'axios'
+import { ethers } from 'ethers'
 import {
   Box,
   HStack,
@@ -10,120 +19,116 @@ import {
   Button,
   Container,
   Flex,
+  Spacer,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Link,
   FormControl,
   FormLabel,
   Heading,
   Stack,
   Textarea,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { verifyMessage } from "ethers/lib/utils";
-import { SignMessageArgs } from "@wagmi/core";
-import { NextSeo } from "next-seo";
-import contractABI from '../../../abi.json';
-import {CONTRACT_ADDRESS, CONTRACT_OWNER} from "../configuration/Config";
+} from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
+import contractABI from '../../../abi.json'
+import { CONTRACT_ADDRESS, CONTRACT_OWNER } from '../configuration/Config'
 
+interface Props {
+  className?: string
+}
 
+export default function IssueDegree(props: Props) {
+  const router = useRouter()
+  const { address, isConnected } = useAccount()
+  const { studentAddress } = router.query
 
-export default function SignExample() {
-  const { address, isConnected } = useAccount();
-  console.log(address)
+  const [fileImg, setFileImg] = useState(null)
+  const { onCopy, value, setValue, hasCopied } = useClipboard('')
+  const sendFileToIPFS = async (e) => {
+    e.preventDefault()
+    if (fileImg) {
+      try {
+        const formData = new FormData()
+        formData.append('file', fileImg)
 
-  const { data, isError, isLoading } = useContractRead({
-    address: CONTRACT_ADDRESS,
-    abi: contractABI,
-    functionName: 'studentsCount',
-  })
-  console.log(data.toString())
+        const resFile = await axios({
+          method: 'post',
+          url: 'https://api.pinata.cloud/pinning/pinFileToIPFS',
+          data: formData,
+          headers: {
+            pinata_api_key: '63540acb2f8baa67d949',
+            pinata_secret_api_key:
+              '9aebd0b625690935a2cf6c6ab4eb4617f35941f4e10595008d775e2ecdd083d1',
+            'Content-Type': 'multipart/form-data',
+          },
+        })
 
-
-  const [studentAddress, setStudentAddress] = useState('')
-  const [major, setMajor] = useState('')
-  const [degreeType, setDegreeType] = useState('')
-  const [score, setScore] = useState('')
+        const ImgHash = `https://indigo-acceptable-smelt-520.mypinata.cloud/ipfs/${resFile.data.IpfsHash}`
+        setValue(ImgHash)
+        console.log(ImgHash)
+      } catch (error) {
+        console.log('Error sending File to IPFS: ')
+        console.log(error)
+      }
+    }
+  }
 
   // Prepare the transaction
   const { config, error: contractWriteError } = usePrepareContractWrite({
     address: CONTRACT_ADDRESS,
     abi: contractABI,
-    functionName: 'createStudent',
-    args: [studentAddress, major, degreeType, score ]
-  });
+    functionName: 'issueDegree',
+    args: [studentAddress, value],
+  })
 
   // Get the write function
-  const { data: writeData, isLoading: writeLoading, write } = useContractWrite(config);
-
-
+  const {
+    data: writeData,
+    isLoading: writeLoading,
+    write,
+  } = useContractWrite(config)
 
   if (isConnected) {
-    return <div>
-      {writeLoading && <p>Please confirm the transaction on your wallet</p>}
-      {writeData && <p>The transaction was sent! Here is the hash: {writeData.hash}</p>}
-      {!writeLoading && (
-        <Box
-        rounded={'lg'}
-        maxW="450px"
-        bg={useColorModeValue('white', 'gray.700')}
-        boxShadow={'lg'}
-        p={3}>
-        <Stack spacing={2}>
-          <Stack>
-            <Box>
-              <FormControl id="address" isRequired>
-                <FormLabel>Student wallet address</FormLabel>
-                <Input type="text" value={studentAddress} onChange={(e) => setStudentAddress(e.target.value)} placeholder='0x...'/>
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl id="major" isRequired>
-                <FormLabel>Major</FormLabel>
-                <Input type="text" value={major} onChange={(e) => setMajor(e.target.value)} placeholder='Computer Science'/>
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl id="degreeType" isRequired>
-                <FormLabel>Degree Type</FormLabel>
-                <Input type="text" value={degreeType} onChange={(e) => setDegreeType(e.target.value)} placeholder='Bachelor'/>
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl id="score" isRequired>
-                <FormLabel>Score</FormLabel>
-                <Input type="number" value={score} onChange={(e) => setScore(e.target.value)}/>
-              </FormControl>
-            </Box>
-          </Stack>
-        
-        
-          <Stack spacing={10} pt={2}>
-            <Button
-              disabled={!write} onClick={() => write()}
-              loadingText="Submitting"
-              size="lg"
-              bg={'blue.400'}
-              color={'white'}
-              _hover={{
-                bg: 'blue.500',
-              }}>
-              Create Student
-            </Button>
-          </Stack>
-          
-        </Stack>
-      </Box>
-    
-      )}
-      {contractWriteError && (
-        <p>
-          Calling that contract function will fail for this reason:
-          {contractWriteError.reason ?? contractWriteError.message}
-        </p>
-      )}
-      
-    </div>
-     
+    return (
+      <Container>
+        {studentAddress}
+        <form onSubmit={sendFileToIPFS}>
+          <input
+            type="file"
+            onChange={(e) => setFileImg(e.target.files[0])}
+            required
+          />
+          <Button type="submit">Send to IPFS</Button>
+          <LinkComponent href={value}>
+            {value}
+          </LinkComponent>
+          <Button onClick={onCopy}>{hasCopied ? 'Copied!' : 'Copy'}</Button>
+        </form>
+        <Stack spacing={10} pt={2}>
+                <Button
+                  disabled={!write}
+                  onClick={() => write()}
+                  loadingText="Submitting"
+                  size="lg"
+                  bg={'blue.400'}
+                  color={'white'}
+                  _hover={{
+                    bg: 'blue.500',
+                  }}
+                >
+                  Issue Degree
+                </Button>
+              </Stack>
+      </Container>
+    )
   }
 
-  return <div>Connect your wallet first to sign a message.</div>;
+  return <div>Connect your wallet first to sign a message.</div>
 }
