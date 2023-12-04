@@ -21,7 +21,7 @@ import {
 import { useState } from 'react'
 import contractABI from '../../../abi.json'
 import { CONTRACT_ADDRESS, CONTRACT_OWNER } from '../configuration/Config'
-import { Info } from '../Reusables/helper'
+import { Warning } from '../Reusables/helper'
 
 interface Props {
   studentAddress: string;
@@ -144,5 +144,5 @@ export default function ClaimDegree() {
     )
   }
 
-  return <Info/>
+  return <Warning/>
 }
