@@ -2,8 +2,6 @@
 import * as React from 'react'
 import {
   useAccount,
-  useSignMessage,
-  useContractRead,
   usePrepareContractWrite,
   useContractWrite,
 } from 'wagmi'
@@ -12,28 +10,9 @@ import { LinkComponent } from '../components/LinkComponent'
 import { Warning, Info } from '../Reusables/helper'
 import axios from 'axios'
 import {
-  Box,
-  HStack,
-  Input,
-  InputGroup,
   Button,
   Container,
-  Flex,
-  Spacer,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Link,
-  FormControl,
-  FormLabel,
-  Heading,
-  Stack,
-  Textarea,
-  useColorModeValue,
+  Stack
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'

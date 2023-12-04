@@ -2,38 +2,21 @@
 import * as React from 'react'
 import {
   useAccount,
-  useSignMessage,
-  useContractRead,
   usePrepareContractWrite,
   useContractWrite,
 } from 'wagmi'
 import { Warning, Info } from '../Reusables/helper'
-import { ethers } from 'ethers'
 import {
   Box,
-  HStack,
   Input,
-  InputGroup,
   Button,
   Container,
-  Flex,
-  Spacer,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Link,
   FormControl,
   FormLabel,
-  Heading,
   Stack,
-  Textarea,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import contractABI from '../../../abi.json'
 import { CONTRACT_ADDRESS, CONTRACT_OWNER } from '../configuration/Config'
 

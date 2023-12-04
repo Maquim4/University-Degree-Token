@@ -2,19 +2,12 @@
 import * as React from 'react'
 import {
   useAccount,
-  useSignMessage,
-  useContractRead,
-  usePrepareContractWrite,
-  useContractWrite,
+  useContractRead
 } from 'wagmi'
 import { ethers } from 'ethers'
 import { Warning, Info } from '../Reusables/helper'
 import {
   Box,
-  HStack,
-  Text,
-  Input,
-  InputGroup,
   Button,
   Container,
   Flex,
@@ -26,14 +19,9 @@ import {
   Th,
   Thead,
   Tr,
-  FormControl,
-  FormLabel,
   Heading,
-  Stack,
-  Textarea,
-  useColorModeValue,
+  Stack
 } from '@chakra-ui/react'
-import { InfoIcon } from '@chakra-ui/icons'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import contractABI from '../../../abi.json'

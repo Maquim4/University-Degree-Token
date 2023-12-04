@@ -2,45 +2,26 @@
 import * as React from 'react'
 import {
   useAccount,
-  useSignMessage,
   useContractRead,
   usePrepareContractWrite,
   useWaitForTransaction,
   useContractWrite,
 } from 'wagmi'
-import { useClipboard } from '@chakra-ui/react'
-import { LinkComponent } from '../components/LinkComponent'
-import axios from 'axios'
-import { ethers } from 'ethers'
 import {
   Box,
-  HStack,
   Input,
-  InputGroup,
   Button,
   Container,
   Flex,
-  Spacer,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Link,
   Text,
-  FormControl,
-  FormLabel,
   Heading,
   Stack,
-  Textarea,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import contractABI from '../../../abi.json'
 import { CONTRACT_ADDRESS, CONTRACT_OWNER } from '../configuration/Config'
+import { Info } from '../Reusables/helper'
 
 interface Props {
   studentAddress: string;
@@ -163,5 +144,5 @@ export default function ClaimDegree() {
     )
   }
 
-  return <div>Connect your wallet first to sign a message.</div>
+  return <Info/>
 }
