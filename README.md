@@ -1,13 +1,24 @@
-# Sample Hardhat Project
+# University Degree Token 
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
+To run it locally copy example.env to .env and set all variables.
+After that open terminal and try running some of the following tasks:
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network sepolia
+```
+
+Go to `artifacts\contracts\UniversityDegreeToken.sol\UniversityDegree.json` and copy abi to abi.json, save it in project directory.
+
+
+```shell
+cd 4end
+```
+Open `4end\src\configuration\Config.ts` and put into *CONTRACT_ADDRESS* and *CONTRACT_OWNER* addresses from deploy command.
+
+Finally 
+
+```shell
+npm i
+npm run dev
 ```

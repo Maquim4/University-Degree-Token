@@ -43,5 +43,3 @@ main()
     console.error(error);
     process.exit(1);
   });
-
-//   const [deployer] = await ethers.getSigners();

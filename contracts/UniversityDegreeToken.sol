@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.10;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -38,7 +38,7 @@ error UniversityDegree__NotOwner();
 error UniversityDegree__YourDegreeNotIssued();
 error UniversityDegree__ScoreTooHigh();
 
-contract UniversityDegree is ERC721URIStorage {
+contract UniversityDegree is ERC721, ERC721URIStorage  {
     using Strings for uint256;
     // ERC721 Variables:
     using Counters for Counters.Counter;
@@ -66,8 +66,6 @@ contract UniversityDegree is ERC721URIStorage {
     // Events:
     event degreeIssued(address student);
     event degreeClaimed(address student, uint256 tokenId);
-    event Attest(address indexed to, uint256 indexed tokenId);
-    event Revoke(address indexed to, uint256 indexed tokenId);
 
     // Modifiers:
     modifier onlyOwner() {
@@ -75,6 +73,10 @@ contract UniversityDegree is ERC721URIStorage {
             revert UniversityDegree__NotOwner();
         }
         _;
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, ERC721URIStorage) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 
     constructor(
@@ -101,14 +103,14 @@ contract UniversityDegree is ERC721URIStorage {
         uint256 newItemId = _tokenIds.current();
         _mint(msg.sender, newItemId);
 
-        string memory tokenURI = generateTokenURI(
+        string memory metaData = generateTokenURI(
             newItemId,
             s_adressToStudent[msg.sender]
         );
-        _setTokenURI(newItemId, tokenURI);
+        _setTokenURI(newItemId, metaData);
 
         s_issuedDegrees[msg.sender] = false;
-        s_studentToDegree[msg.sender] = tokenURI;
+        s_studentToDegree[msg.sender] = metaData;
 
         emit degreeClaimed(msg.sender, newItemId);
 
@@ -183,7 +185,7 @@ contract UniversityDegree is ERC721URIStorage {
     function createStudent(string memory _fullName, address _student, string memory _degreeMajor,
         string memory _degreeType,
         uint256 _score) external onlyOwner {
-            if (_score > s_degreeMaxScore) {
+        if (_score > s_degreeMaxScore) {
             revert UniversityDegree__ScoreTooHigh();
         }
         Student memory student = Student({studentAddress: _student, fullName: _fullName, degreeMajor: _degreeMajor, degreeType: _degreeType, score: _score, degreeImage: s_degreeInProcess});
@@ -213,23 +215,23 @@ contract UniversityDegree is ERC721URIStorage {
     function _beforeTokenTransfer(
         address from,
         address to,
-        uint256
-    ) internal pure {
-        require(
-            from == address(0) || to == address(0),
-            "Not allowed to transfer token"
-        );
+        uint256 tokenId,
+        uint256 batchSize
+    ) internal virtual override (ERC721) {
+        require(from == address(0), "Err: token transfer is BLOCKED");   
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 
-    function _afterTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal {
-        if (from == address(0)) {
-            emit Attest(to, tokenId);
-        } else if (to == address(0)) {
-            emit Revoke(to, tokenId);
-        }
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
+ 
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
     }
 }

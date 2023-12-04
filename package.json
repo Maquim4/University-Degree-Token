@@ -6,7 +6,6 @@
     "hardhat": "^2.19.1"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.0",
-    "axios": "^1.6.2"
+    "@openzeppelin/contracts": "^4.7.0"
   }
 }
