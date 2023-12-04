@@ -42,7 +42,11 @@ import { useState, useEffect } from 'react'
 import contractABI from '../../../abi.json'
 import { CONTRACT_ADDRESS, CONTRACT_OWNER } from '../configuration/Config'
 
-function Issue(props: string) {
+interface Props {
+  studentAddress: string;
+}
+
+function Issue(props: Props) {
   const { } = useContractRead({
     address: CONTRACT_ADDRESS,
     abi: contractABI,
