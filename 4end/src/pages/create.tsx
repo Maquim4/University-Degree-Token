@@ -96,7 +96,7 @@ export default function CreateStudent() {
                 </Box>
                 <Box>
                   <FormControl id="fullName" isRequired>
-                    <FormLabel>Student's Full Name</FormLabel>
+                    <FormLabel>Student&apos;s Full Name</FormLabel>
                     <Input
                       type="text"
                       value={fullName}
