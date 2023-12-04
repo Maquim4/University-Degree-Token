@@ -28,7 +28,7 @@ interface Props {
 }
 
 function Issue(props: Props) {
-  const { } = useContractRead({
+  const { data: issueData} = useContractRead({
     address: CONTRACT_ADDRESS,
     abi: contractABI,
     functionName: 'isStudentDegreeIssued',
@@ -44,15 +44,15 @@ function Issue(props: Props) {
 
   // Get the write function
   const {
-    data,
+    data: writeData,
     write
   } = useContractWrite(config)
 
   const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
+    hash: writeData?.hash,
   })
 
-  if (data) {
+  if (issueData) {
     return (
       <Container>
         <Stack spacing={10} pt={2}>
@@ -74,7 +74,7 @@ function Issue(props: Props) {
             <div>
               Successfully minted your NFT!
               <div>
-                <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+                <a href={`https://sepolia.etherscan.io/tx/${writeData?.hash}`}>Etherscan</a>
               </div>
             </div>
           )}

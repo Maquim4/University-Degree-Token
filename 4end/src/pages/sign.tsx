@@ -13,6 +13,7 @@ import {
   Textarea,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Warning } from '../Reusables/helper'
 import { useState } from "react";
 import { verifyMessage } from "ethers/lib/utils";
 import { SignMessageArgs } from "@wagmi/core";
@@ -128,5 +129,5 @@ export default function SignExample() {
     );
   }
 
-  return <div>Connect your wallet first to sign a message.</div>;
+  return <Warning/>;
 }
