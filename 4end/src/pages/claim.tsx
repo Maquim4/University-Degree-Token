@@ -78,7 +78,7 @@ function Issue(props: Props) {
           <Text as="kbd">Your degree is issued!</Text>
           <Button
             disabled={!write}
-            onClick={() => write()}
+            onClick={() => write?.()}
             loadingText="Submitting"
             size="lg"
             bg={'blue.400'}

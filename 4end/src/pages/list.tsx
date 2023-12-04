@@ -54,8 +54,8 @@ export default function StudentsList() {
   const [students, setStudents] = useState([])
 
   useEffect(() => {
-    setStudents(data)
-  }, [])
+    setStudents(data as Array<never>)
+  }, [data])
 
   const showHeading = () => (
     <Flex>
@@ -64,7 +64,7 @@ export default function StudentsList() {
       </Box>
       <Spacer />
       <Box>
-        <Link ml={2} href={'/create'}>
+        <Link href={'/create'}>
           <Button colorScheme={'blue'}>Add Student</Button>
         </Link>
       </Box>
@@ -91,14 +91,13 @@ export default function StudentsList() {
               <Td>{item[1]}</Td>
               <Td>{item[2]}</Td>
               <Td>{item[3]}</Td>
-              <Td>{item[4].toString()}</Td>
+              <Td>{(item[4] as any).toString()}</Td>
               <Td>
                 <Link
                   href={{
                     pathname: '/issue',
-                    query: { studentAddress: item[0].toString() },
+                    query: { studentAddress: (item[0] as any).toString() },
                   }}
-                  mr={2}
                 >
                   Issue Degree
                 </Link>
@@ -110,7 +109,7 @@ export default function StudentsList() {
     </TableContainer>
   )
   if (isConnected && address != CONTRACT_OWNER) {
-    return <Info/>
+    return <Info />
   }
 
   if (isConnected && address == CONTRACT_OWNER) {
@@ -124,5 +123,5 @@ export default function StudentsList() {
     )
   }
 
-  return <Warning/>
+  return <Warning />
 }

@@ -141,7 +141,7 @@ export default function CreateStudent() {
               <Stack spacing={10} pt={2}>
                 <Button
                   disabled={!write}
-                  onClick={() => write()}
+                  onClick={() => write?.()}
                   loadingText="Submitting"
                   size="lg"
                   bg={'blue.400'}
@@ -159,7 +159,7 @@ export default function CreateStudent() {
         {contractWriteError && (
           <p>
             Calling that contract function will fail for this reason:
-            {contractWriteError.reason ?? contractWriteError.message}
+            {contractWriteError.message}
           </p>
         )}
       </Container>

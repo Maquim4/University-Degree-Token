@@ -118,7 +118,7 @@ export default function IssueDegree(props: Props) {
         <Stack spacing={10} pt={2}>
                 <Button
                   disabled={!write}
-                  onClick={() => write()}
+                  onClick={() => write?.()}
                   loadingText="Submitting"
                   size="lg"
                   bg={'blue.400'}
