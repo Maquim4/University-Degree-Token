@@ -8,9 +8,11 @@ import {
   useContractWrite,
 } from 'wagmi'
 import { ethers } from 'ethers'
+import { Warning, Info } from '../Reusables/helper'
 import {
   Box,
   HStack,
+  Text,
   Input,
   InputGroup,
   Button,
@@ -31,8 +33,9 @@ import {
   Textarea,
   useColorModeValue,
 } from '@chakra-ui/react'
+import { InfoIcon } from '@chakra-ui/icons'
 import { useState, useEffect } from 'react'
-import Link from "next/link";
+import Link from 'next/link'
 import contractABI from '../../../abi.json'
 import { CONTRACT_ADDRESS, CONTRACT_OWNER } from '../configuration/Config'
 
@@ -90,7 +93,15 @@ export default function StudentsList() {
               <Td>{item[3]}</Td>
               <Td>{item[4].toString()}</Td>
               <Td>
-                <Link href={{ pathname: '/issue', query: { studentAddress: item[0].toString() } }} mr={2}>Issue Degree</Link>
+                <Link
+                  href={{
+                    pathname: '/issue',
+                    query: { studentAddress: item[0].toString() },
+                  }}
+                  mr={2}
+                >
+                  Issue Degree
+                </Link>
               </Td>
             </Tr>
           ))}
@@ -98,8 +109,11 @@ export default function StudentsList() {
       </Table>
     </TableContainer>
   )
+  if (isConnected && address != CONTRACT_OWNER) {
+    return <Info/>
+  }
 
-  if (isConnected) {
+  if (isConnected && address == CONTRACT_OWNER) {
     return (
       <Box p={4}>
         <Stack spacing={4} as={Container} maxW={'4xl'}>
@@ -110,5 +124,5 @@ export default function StudentsList() {
     )
   }
 
-  return <div>Connect your wallet first to sign a message.</div>
+  return <Warning/>
 }

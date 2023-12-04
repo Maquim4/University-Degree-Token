@@ -9,8 +9,8 @@ import {
 } from 'wagmi'
 import { useClipboard } from '@chakra-ui/react'
 import { LinkComponent } from '../components/LinkComponent'
+import { Warning, Info } from '../Reusables/helper'
 import axios from 'axios'
-import { ethers } from 'ethers'
 import {
   Box,
   HStack,
@@ -49,9 +49,9 @@ export default function IssueDegree(props: Props) {
   const { address, isConnected } = useAccount()
   const { studentAddress } = router.query
 
-  const [fileImg, setFileImg] = useState(null)
+  const [fileImg, setFileImg] = useState<File | null>(null);
   const { onCopy, value, setValue, hasCopied } = useClipboard('')
-  const sendFileToIPFS = async (e) => {
+  const sendFileToIPFS = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (fileImg) {
       try {
@@ -95,14 +95,18 @@ export default function IssueDegree(props: Props) {
     write,
   } = useContractWrite(config)
 
-  if (isConnected) {
+  if (isConnected && address != CONTRACT_OWNER) {
+    return <Info/>
+  }
+
+  if (isConnected && address == CONTRACT_OWNER) {
     return (
       <Container>
         {studentAddress}
         <form onSubmit={sendFileToIPFS}>
           <input
             type="file"
-            onChange={(e) => setFileImg(e.target.files[0])}
+            onChange={(e) => setFileImg(e.target.files? e.target.files[0] : null)}
             required
           />
           <Button type="submit">Send to IPFS</Button>
@@ -130,5 +134,5 @@ export default function IssueDegree(props: Props) {
     )
   }
 
-  return <div>Connect your wallet first to sign a message.</div>
+  return <Warning/>
 }

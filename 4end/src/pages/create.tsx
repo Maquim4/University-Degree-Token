@@ -7,6 +7,7 @@ import {
   usePrepareContractWrite,
   useContractWrite,
 } from 'wagmi'
+import { Warning, Info } from '../Reusables/helper'
 import { ethers } from 'ethers'
 import {
   Box,
@@ -61,7 +62,11 @@ export default function CreateStudent() {
     write,
   } = useContractWrite(config)
 
-  if (isConnected) {
+  if (isConnected && address != CONTRACT_OWNER) {
+    return <Info/>
+  }
+
+  if (isConnected && address == CONTRACT_OWNER) {
     return (
       <Container>
         {writeLoading && <p>Please confirm the transaction on your wallet</p>}
@@ -161,5 +166,5 @@ export default function CreateStudent() {
     )
   }
 
-  return <div>Connect your wallet first to sign a message.</div>
+  return <Warning/>
 }

@@ -4,7 +4,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { ReactElement } from 'react'
 import { Box, SimpleGrid, Icon, Text, Stack, Flex, Container, Heading } from '@chakra-ui/react'
-import { FcAssistant, FcDonate, FcInTransit } from 'react-icons/fc'
+import { FcAssistant, FcDonate, FcInTransit, FcGenealogy, FcGlobe, FcDiploma1   } from 'react-icons/fc'
 
 interface FeatureProps {
   title: string
@@ -14,7 +14,7 @@ interface FeatureProps {
 
 const Feature = ({ title, text, icon }: FeatureProps) => {
   return (
-    <Stack>
+    <Stack align={'center'}>
       <Flex
         w={16}
         h={16}
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
           as={Box}
           textAlign={'center'}
           spacing={{ base: 8, md: 14 }}
-          py={{ base: 20, md: 36 }}>
+          py={{ base: 20, md: 20 }}>
           <Heading
             fontWeight={600}
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
@@ -52,24 +52,24 @@ const Home: NextPage = () => {
           <Box p={4}>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
         <Feature
-          icon={<Icon as={FcAssistant} w={10} h={10} />}
-          title={'Lifetime Support'}
+          icon={<Icon as={FcGenealogy} w={10} h={10} />}
+          title={'Reliability'}
           text={
-            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
+            'By tokenizing the degrees, the university created a secure, verifiable, and easily shareable record of graduates’ achievements'
           }
         />
         <Feature
-          icon={<Icon as={FcDonate} w={10} h={10} />}
-          title={'Unlimited Donations'}
+          icon={<Icon as={FcGlobe} w={10} h={10} />}
+          title={'Worldwide access'}
           text={
-            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
+            'Your documents will be easy to store and take with you anywhere, and it will be faster for agencies to verify their authenticity'
           }
         />
         <Feature
-          icon={<Icon as={FcInTransit} w={10} h={10} />}
-          title={'Instant Delivery'}
+          icon={<Icon as={FcDiploma1} w={10} h={10} />}
+          title={'Decentralization'}
           text={
-            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
+            'Once it is on the blockchain it becomes a decentralized digital asset. No centralized authority can amend or take ownership of the token'
           }
         />
       </SimpleGrid>
