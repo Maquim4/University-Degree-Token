@@ -1,4 +1,6 @@
 # University Degree Token 
+![about](about.png)  
+See presentation to understand more.
 
 To run it locally copy example.env to .env and set all variables.
 After that open terminal and try running some of the following tasks:
